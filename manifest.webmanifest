@@ -1,6 +1,6 @@
 {
-  "name": "Еда без паники",
-  "short_name": "Еда без паники",
+  "name": "Тарелка",
+  "short_name": "Тарелка",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#10110f",
