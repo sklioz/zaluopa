@@ -1,0 +1,9 @@
+{
+  "name": "Еда без паники",
+  "short_name": "Еда без паники",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#10110f",
+  "theme_color": "#10110f",
+  "lang": "ru"
+}
