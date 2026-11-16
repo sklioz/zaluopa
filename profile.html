@@ -1,5 +1,48 @@
 <!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#10110f"><link rel="stylesheet" href="style.css"><title>Мой прогресс — Тарелка</title></head><body><div class="grain"></div><header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">Т</span><span>ТАРЕЛКА<span class="brand-dot">.</span></span></a><nav class="nav"><a href="index.html">Главная</a><a href="guide.html">Гид</a><a href="recipes.html">Рецепты</a><a href="planner.html">Планировщик</a><a href="quiz.html">Тесты</a><a href="lab.html">Игры</a><a href="basket.html">Корзина</a></nav><a class="profile-link active" href="profile.html"><span class="profile-icon">↗</span> МОЙ ПРОГРЕСС</a><button class="menu-toggle" aria-label="Открыть меню">☰</button></header>
-<main class="inner-page"><div class="page-hero compact"><div class="eyebrow"><span class="live-dot"></span> PERSONAL DASHBOARD / 004</div><h1>ТВОЙ РИТМ.<br><em>ТВОИ ПРАВИЛА.</em></h1><p>Локальная панель, чтобы видеть свои маленькие шаги. Без регистрации и без оценок.</p></div><section class="profile-settings" aria-labelledby="profile-settings-title">
+<main class="inner-page"><div class="page-hero compact"><div class="eyebrow"><span class="live-dot"></span> PERSONAL DASHBOARD / 004</div><h1>ТВОЙ РИТМ.<br><em>ТВОИ ПРАВИЛА.</em></h1><p>Локальная панель, чтобы видеть свои маленькие шаги. Без регистрации и без оценок.</p></div>
+<section class="profile-settings account-card" id="account-panel" aria-labelledby="account-title">
+  <div class="panel-head">
+    <div><span class="mini-label">ОБЛАЧНЫЙ АККАУНТ</span><h2 id="account-title">Личный кабинет</h2></div>
+    <span class="settings-saved" id="auth-status" aria-live="polite">Гость</span>
+  </div>
+  <p class="settings-intro" id="account-intro">Войди или создай аккаунт, чтобы сохранять игровой прогресс и открывать его на других устройствах.</p>
+  <div class="account-actions" id="auth-guest-actions">
+    <button class="btn btn-acid" id="open-signup" type="button">СОЗДАТЬ АККАУНТ ↗</button>
+    <button class="plain-button" id="open-signin" type="button">УЖЕ ЕСТЬ АККАУНТ? ВОЙТИ</button>
+  </div>
+  <div id="auth-user" hidden>
+    <p id="auth-user-label"></p>
+    <div class="profile-form-actions"><button class="plain-button" id="sync-now" type="button">Синхронизировать сейчас</button><button class="plain-button" id="signout-button" type="button">Выйти</button></div>
+  </div>
+  <dialog class="auth-dialog" id="auth-dialog" aria-labelledby="auth-dialog-title">
+    <div class="auth-dialog-inner">
+      <button class="auth-dialog-close" id="close-auth" type="button" aria-label="Закрыть">×</button>
+      <span class="mini-label">ТАРЕЛКА / ACCOUNT</span>
+      <h2 id="auth-dialog-title">Создать аккаунт</h2>
+      <p class="auth-dialog-copy" id="auth-dialog-copy">Сохраняй прогресс и возвращайся к нему с любого устройства.</p>
+      <div class="auth-switch">
+        <button type="button" class="auth-switch-btn active" id="show-signup">Регистрация</button>
+        <button type="button" class="auth-switch-btn" id="show-signin">Вход</button>
+      </div>
+      <div id="auth-forms">
+        <form id="signup-form" class="profile-form auth-form">
+          <label>Email<input type="email" name="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"></label>
+          <label>Логин<input type="text" name="username" autocomplete="username" required minlength="3" maxlength="24" pattern="[A-Za-z0-9_]+" placeholder="например, student_01"></label>
+          <label>Пароль<input type="password" name="password" autocomplete="new-password" required minlength="8" placeholder="Не менее 8 символов"></label>
+          <div class="profile-form-actions"><button class="btn btn-acid" type="submit">СОЗДАТЬ АККАУНТ ↗</button></div>
+        </form>
+        <form id="signin-form" class="profile-form auth-form" hidden>
+          <label>Email<input type="email" name="email" autocomplete="email" required placeholder="you@example.com"></label>
+          <label>Пароль<input type="password" name="password" autocomplete="current-password" required placeholder="Твой пароль"></label>
+          <div class="profile-form-actions"><button class="btn btn-acid" type="submit">ВОЙТИ ↗</button></div>
+        </form>
+      </div>
+      <p class="profile-settings-note" id="auth-message" role="status" aria-live="polite">Если включено подтверждение email, после регистрации проверь почту.</p>
+    </div>
+  </dialog>
+</section>
+
+<section class="profile-settings" aria-labelledby="profile-settings-title">
 <div class="panel-head"><div><span class="mini-label">ПЕРСОНАЛЬНЫЕ НАСТРОЙКИ</span><h2 id="profile-settings-title">Мои данные</h2></div><span class="settings-saved" id="profile-saved" aria-live="polite">Не сохранено</span></div>
 <p class="settings-intro">Заполни только те поля, которыми хочешь поделиться с сайтом. Данные сохраняются только в этом браузере и помогают учитывать твои предпочтения при подборе идей.</p>
 <form id="profile-settings-form" class="profile-form">
@@ -13,4 +56,4 @@
 </form>
 <div class="profile-settings-note"><strong>Важно:</strong> рост и вес здесь не оцениваются и не используются для расчёта «идеального» тела, ограничений питания или похудения. Это необязательные личные заметки. Если тебе нужны рекомендации по питанию с учётом здоровья, обсуди их со специалистом.</div>
 </section>
-<section class="profile-grid"><div class="profile-main"><div class="panel-head"><div><span class="mini-label">СВОДКА</span><h2>Что уже сделано</h2></div><button class="plain-button" id="reset-progress">Очистить данные ↺</button></div><div class="stat-cards"><div class="stat-card"><span>Тест</span><b id="profile-score">—</b><small>последний результат</small></div><div class="stat-card"><span>Покупки</span><b id="profile-shopping">0</b><small>отмечено в списке</small></div><div class="stat-card"><span>Привычки</span><b id="profile-habits">0/4</b><small>маленькие шаги</small></div></div><div class="profile-note"><span class="mini-label">ВАЖНО ЗНАТЬ</span><h3>Это твоё устройство, не облачный аккаунт.</h3><p>Сайт хранит отметки в localStorage текущего браузера. Они не синхронизируются с другими устройствами и не видны другим пользователям. Не записывай сюда медицинские или другие чувствительные сведения.</p></div></div><aside class="profile-side"><div class="aside-dark"><span class="mini-label">ДАЛЬШЕ</span><h3>Продолжай<br><em>по одному шагу.</em></h3><a class="side-action" href="planner.html">Собрать меню <span>↗</span></a><a class="side-action" href="recipes.html">Найти рецепт <span>↗</span></a><a class="side-action" href="quiz.html">Пройти тест ещё раз <span>↗</span></a></div></aside></section></main><footer class="footer"><a class="brand" href="index.html"><span class="brand-mark">Т</span><span>ТАРЕЛКА<span class="brand-dot">.</span></span></a><p>Прогресс — это не соревнование.</p><div><a href="guide.html">Гид</a><a href="recipes.html">Рецепты</a><a href="planner.html">Планировщик</a></div><small>Данные хранятся локально в браузере.</small></footer><script src="app.js"></script></body></html>
+<section class="profile-grid"><div class="profile-main"><div class="panel-head"><div><span class="mini-label">СВОДКА</span><h2>Что уже сделано</h2></div><button class="plain-button" id="reset-progress">Очистить данные ↺</button></div><div class="stat-cards"><div class="stat-card"><span>Тест</span><b id="profile-score">—</b><small>последний результат</small></div><div class="stat-card"><span>Покупки</span><b id="profile-shopping">0</b><small>отмечено в списке</small></div><div class="stat-card"><span>Привычки</span><b id="profile-habits">0/4</b><small>маленькие шаги</small></div></div><div class="profile-note"><span class="mini-label">ВАЖНО ЗНАТЬ</span><h3>Это твоё устройство, не облачный аккаунт.</h3><p>Сайт хранит отметки в localStorage текущего браузера. Они не синхронизируются с другими устройствами и не видны другим пользователям. Не записывай сюда медицинские или другие чувствительные сведения.</p></div></div><aside class="profile-side"><div class="aside-dark"><span class="mini-label">ДАЛЬШЕ</span><h3>Продолжай<br><em>по одному шагу.</em></h3><a class="side-action" href="planner.html">Собрать меню <span>↗</span></a><a class="side-action" href="recipes.html">Найти рецепт <span>↗</span></a><a class="side-action" href="quiz.html">Пройти тест ещё раз <span>↗</span></a></div></aside></section></main><footer class="footer"><a class="brand" href="index.html"><span class="brand-mark">Т</span><span>ТАРЕЛКА<span class="brand-dot">.</span></span></a><p>Прогресс — это не соревнование.</p><div><a href="guide.html">Гид</a><a href="recipes.html">Рецепты</a><a href="planner.html">Планировщик</a></div><small>Данные хранятся локально в браузере.</small></footer><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js"></script><script src="auth.js"></script><script src="app.js"></script></body></html>
