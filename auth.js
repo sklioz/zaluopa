@@ -113,6 +113,9 @@
     const form = event.currentTarget;
     const email = form.email.value.trim();
     const username = form.username.value.trim();
+    const displayName = (form.displayName?.value || username).trim() || username;
+    const avatar = form.avatar?.value || '🌿';
+    const bio = (form.bio?.value || '').trim();
     const password = form.password.value;
     if (!/^[A-Za-z0-9_]{3,24}$/.test(username)) {
       message('Логин должен содержать 3–24 латинских буквы, цифры или подчёркивания.', true); return;
@@ -120,12 +123,12 @@
     if (password.length < 8) { message('Пароль должен содержать минимум 8 символов.', true); return; }
     message('Создаём аккаунт…');
     const { data, error } = await client.auth.signUp({
-      email, password, options: { data: { username } }
+      email, password, options: { data: { username, display_name: displayName, avatar, bio } }
     });
     if (error) { message(error.message, true); return; }
     if (data.user) {
       const { error: profileError } = await client.from('profiles').upsert({
-        id: data.user.id, username, display_name: username
+        id: data.user.id, username, display_name: displayName
       }, { onConflict: 'id' });
       if (profileError) message('Аккаунт создан, но профиль не сохранился: ' + profileError.message, true);
       else message(data.session ? 'Аккаунт создан. Ты вошёл.' : 'Аккаунт создан. Проверь почту и подтверди email, затем войди.');
@@ -155,8 +158,9 @@
   });
   client.auth.getSession().then(({ data }) => {
     const user = data.session?.user || null;
+    const changed = (currentUser?.id || null) !== (user?.id || null);
     showUser(user);
-    if (user) loadFromCloud();
+    if (user && changed) loadFromCloud();
   });
   window.addEventListener('focus', () => { if (currentUser) syncToCloud(); });
   document.addEventListener('visibilitychange', () => {
