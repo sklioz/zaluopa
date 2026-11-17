@@ -3,7 +3,27 @@ const STORE={habits:'ebp_habits_v1',menu:'tarelka_menu_v3',shopping:'ebp_shoppin
 function read(key,fallback){try{const v=localStorage.getItem(key);return v?JSON.parse(v):fallback}catch(e){return fallback}}
 function write(key,value){try{localStorage.setItem(key,JSON.stringify(value))}catch(e){}}
 function safeText(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-const toggle=$('.menu-toggle'),nav=$('.nav');if(toggle&&nav)toggle.addEventListener('click',()=>nav.classList.toggle('open'));
+const toggle=$('.menu-toggle'),nav=$('.nav');
+if(toggle&&nav){
+ toggle.textContent='РАЗДЕЛЫ ▾';
+ toggle.setAttribute('aria-expanded','false');
+ toggle.setAttribute('aria-label','Открыть разделы сайта');
+ toggle.addEventListener('click',event=>{
+  event.stopPropagation();
+  const open=nav.classList.toggle('open');
+  toggle.setAttribute('aria-expanded',String(open));
+  toggle.textContent=open?'РАЗДЕЛЫ ▴':'РАЗДЕЛЫ ▾';
+ });
+ nav.addEventListener('click',event=>{
+  if(event.target.closest('a')){nav.classList.remove('open');toggle.setAttribute('aria-expanded','false');toggle.textContent='РАЗДЕЛЫ ▾';}
+ });
+ document.addEventListener('click',event=>{
+  if(!nav.contains(event.target)&&!toggle.contains(event.target)){nav.classList.remove('open');toggle.setAttribute('aria-expanded','false');toggle.textContent='РАЗДЕЛЫ ▾';}
+ });
+ document.addEventListener('keydown',event=>{
+  if(event.key==='Escape'){nav.classList.remove('open');toggle.setAttribute('aria-expanded','false');toggle.textContent='РАЗДЕЛЫ ▾';}
+ });
+}
 
 // Shared recipe database powers cards, recommendations and the shopping basket.
 const recipes=[
