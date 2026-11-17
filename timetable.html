@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#f7f6f0">
 <title>Расписание ПИЭ(б)-61 — Тарелка</title>
-<link rel="stylesheet" href="style.css?v=43">
+<link rel="stylesheet" href="style.css?v=44">
 <style>
 body{background:#f7f6f0;color:#303229}.timetable-page{width:min(1180px,92%);margin:38px auto 70px}
 .timetable-heading{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:22px}
@@ -90,6 +90,10 @@ body{background:#f7f6f0;color:#303229}.timetable-page{width:min(1180px,92%);marg
 .official-homework-foot button{margin-left:auto!important}
 .timetable-tabs{position:static!important}
 @media(max-width:760px){.official-week{grid-template-columns:1fr!important}.official-homework-foot button{margin-left:0!important}}
+.week-picker{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:14px 0 8px;padding:10px 12px;border:1px solid #e8e4da;border-radius:10px;background:#f7f6f0;color:#66695f;font:10px var(--mono)}
+.week-picker label{display:flex;align-items:center;gap:7px}.week-picker input{max-width:145px;padding:7px 9px;border:1px solid #dedacd;border-radius:7px;background:#fffdf8;color:#303229}
+.week-picker button{padding:7px 10px;border:1px solid #dedacd;border-radius:7px;background:#fffdf8;color:#526344;cursor:pointer;font:10px var(--mono)}#week-caption{margin-left:auto;color:#77796f}
+.official-day.is-today{border-color:#8a9d6b;background:#fbfcf6;box-shadow:0 0 0 1px #8a9d6b inset}.day-date{display:block;margin-top:4px;color:#8a8d7e;font:9px var(--mono);font-weight:400}
 </style>
 </head>
 <body>
@@ -104,6 +108,7 @@ body{background:#f7f6f0;color:#303229}.timetable-page{width:min(1180px,92%);marg
 <div id="panel-schedule" class="timetable-panel" role="tabpanel" aria-labelledby="tab-schedule">
 <div class="official-timetable-head"><div><span class="section-kicker">ТОГУ / ПИЭ(б)-61</span><h3>Расписание занятий</h3><p>Добавляй задания прямо к нужным парам</p></div></div>
 <div class="group-tools"><label>Текущая группа<input value="ПИЭ(б)-61" readonly></label><a href="https://togudv.ru/rasp/" target="_blank" rel="noopener">Найти другую группу на сайте ТОГУ ↗</a></div>
+<div class="week-picker"><button type="button" id="week-prev">←</button><label>Неделя с <input type="date" id="week-start"></label><button type="button" id="week-next">→</button><button type="button" id="week-current">Эта неделя</button><span id="week-caption"></span></div>
 <div class="official-timetable-controls"><label>Тип недели<select id="official-parity"><option value="all">Все занятия</option><option value="Ч">Числитель</option><option value="З">Знаменатель</option></select></label><span id="official-count" aria-live="polite"></span></div>
 <div id="official-week" class="official-week" aria-live="polite"></div>
 <p class="official-note">Расписание перенесено из PDF. Сверяй изменения с <a href="https://togudv.ru/rasp/groups/68973/" target="_blank" rel="noopener">официальной страницей ТОГУ</a>.</p>
@@ -114,5 +119,5 @@ body{background:#f7f6f0;color:#303229}.timetable-page{width:min(1180px,92%);marg
 </div>
 </section>
 </main>
-<script src="student-schedule.js?v=43"></script>
-<script src="app.js?v=43"></script></body></html>
+<script src="student-schedule.js?v=44"></script>
+<script src="app.js?v=44"></script></body></html>
