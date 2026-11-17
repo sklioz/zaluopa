@@ -14,7 +14,7 @@
     try {
       const client = window.supabase.createClient(window.TARELKA_SUPABASE_URL, window.TARELKA_SUPABASE_PUBLISHABLE_KEY);
       const { data } = await client.auth.getSession();
-      await client.rpc('record_site_visit', { p_visitor_id: visitorId, p_page: '/' + path, p_user_id: data.session?.user?.id || null });
+      await client.rpc('record_site_visit', { p_visitor_id: visitorId, p_page: '/' + path });
     } catch (_) {}
   };
   const choice = localStorage.getItem(KEY);
