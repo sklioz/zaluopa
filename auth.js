@@ -68,7 +68,6 @@
       writeSnapshot(data.preferences);
       lastSnapshot = JSON.stringify(readLocalSnapshot());
       message('Облачный прогресс загружен на это устройство.');
-      window.location.reload();
     } else {
       await syncToCloud();
     }
