@@ -489,3 +489,27 @@ button:disabled{color:#85877c!important}
 @media(prefers-reduced-motion:reduce){
  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 }
+
+
+/* Личный кабинет: карточка аккаунта, редактирование и достижения */
+.account-profile-overview{display:flex;align-items:center;gap:16px;margin:22px 0;padding:18px;background:#f0f1e9;border:1px solid #e0e4d6;border-radius:14px}
+.account-avatar{width:62px;height:62px;flex:0 0 62px;display:grid;place-items:center;border-radius:50%;background:#e1e8d6;font-size:30px}
+.account-profile-copy{display:grid;gap:3px;min-width:0}
+.account-profile-copy strong{font:600 21px var(--display);color:#303229}
+.account-profile-copy span{font-size:12px;color:#66695f;overflow-wrap:anywhere}
+.account-profile-copy small{font-size:10px;color:#85877c}
+.account-profile-form{padding:20px;background:#f8f7f1;border:1px solid #e7e2d7;border-radius:13px}
+.account-session-actions{padding-top:16px;border-top:1px solid #e5e0d5}
+.profile-achievements{margin-top:22px;padding:24px;background:#fffdf8;border:1px solid #e7e2d7;border-radius:15px}
+.profile-achievements .panel-head{margin-bottom:16px}
+.profile-achievements h2{margin:5px 0 0;font:600 27px var(--display);color:#303229}
+.achievement-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.achievement-item{min-width:0;padding:16px;background:#f1f0e9;border:1px solid #e5e0d5;border-radius:12px}
+.achievement-item .achievement-icon{font-size:23px;display:block;margin-bottom:10px;filter:grayscale(1);opacity:.5}
+.achievement-item.is-earned .achievement-icon{filter:none;opacity:1}
+.achievement-item strong{display:block;font-size:12px;color:#303229}
+.achievement-item small{display:block;margin-top:5px;font-size:10px;line-height:1.5;color:#77796f}
+.achievement-item.is-earned{background:#edf1e5;border-color:#dce5cf}
+.profile-activity-date{margin:14px 0 0;color:#77796f;font-size:11px}
+.activity-empty{grid-column:1/-1;color:#77796f;font-size:11px}
+@media(max-width:600px){.achievement-grid{grid-template-columns:1fr}.account-profile-form{padding:14px}.account-profile-overview{align-items:flex-start}}
