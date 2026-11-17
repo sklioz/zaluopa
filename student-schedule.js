@@ -45,6 +45,10 @@
  ];
  const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const HW_KEY='tarelka_togu_homework_v1';
+ const iso=d=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');
+ const monday=d=>{const x=new Date(d+'T12:00:00');x.setDate(x.getDate()-((x.getDay()+6)%7));return x;};
+ const weekStart=$('week-start');
+ if(weekStart)weekStart.value=iso(monday(iso(new Date())));
  const signatures=official.map((x,i)=>String(i)+'|'+x[0]+'|'+x[1]+'|'+x[2]+'|'+x[5]+'|'+x[6]);
  const readHomework=()=>{try{return JSON.parse(localStorage.getItem(HW_KEY)||'{}')||{}}catch{return{}}};
  let homework=readHomework();
@@ -65,10 +69,16 @@
   const parity=$('official-parity')?.value||'all';
   const entries=official.filter(x=>parity==='all'||!x[3]||x[3]===parity);
   $('official-count').textContent=entries.length+' занятий';
+  const start=weekStart?.value?new Date(weekStart.value+'T12:00:00'):monday(iso(new Date()));
+  const end=new Date(start);end.setDate(end.getDate()+5);
+  const today=iso(new Date());
+  const caption=$('week-caption');if(caption)caption.textContent=start.toLocaleDateString('ru-RU',{day:'numeric',month:'short'})+' – '+end.toLocaleDateString('ru-RU',{day:'numeric',month:'short'});
   root.innerHTML=days.map((day,index)=>{
    const list=entries.map(x=>({x,i:official.indexOf(x)})).filter(v=>v.x[0]===index).sort((a,b)=>a.x[1]-b.x[1]||a.x[2].localeCompare(b.x[2]));
    if(!list.length)return '';
-   return '<section class="official-day"><h4>'+day+'</h4>'+list.map(({x,i})=>{
+   const dayDate=new Date(start);dayDate.setDate(dayDate.getDate()+index);
+   const dayIso=iso(dayDate);
+   return '<section class="official-day '+(dayIso===today?'is-today':'')+'"><h4>'+day+'<small class="day-date">'+dayDate.toLocaleDateString('ru-RU',{day:'numeric',month:'short'})+(dayIso===today?' · СЕГОДНЯ':'')+'</small></h4>'+list.map(({x,i})=>{
     const h=homework[signatures[i]]||{};
     const expanded=Boolean(h.text&&h.text.trim());
     return '<article class="official-lesson" id="lesson-'+i+'"><div class="official-lesson-time"><b>'+x[1]+' пара</b><time>'+x[2]+'</time><span>'+(x[3]||'Ч/З')+'</span></div><div class="official-lesson-body"><strong>'+esc(x[5])+'</strong><div class="official-meta">'+esc(x[4])+' · ауд. '+esc(x[6])+' · '+esc(x[7])+'</div>'+(x[9]?'<small>'+esc(x[9])+'</small>':'')+'<small>'+esc(x[8])+'</small><button class="hw-toggle" type="button" data-hw-toggle="'+i+'" aria-expanded="'+expanded+'">'+(expanded?'Изменить ДЗ':'＋ Добавить ДЗ')+'</button></div><div class="official-homework" data-hw-panel="'+i+'" '+(expanded?'':'hidden')+'><textarea maxlength="1200" data-hw-text="'+i+'" placeholder="Запиши домашнее задание...">'+esc(h.text||'')+'</textarea><div class="official-homework-foot"><label>Срок <input type="date" data-hw-due="'+i+'" value="'+esc(h.due||'')+'"></label><label><input type="checkbox" data-hw-done="'+i+'" '+(h.done?'checked':'')+'> Выполнено</label><button type="button" data-hw-save="'+i+'">СОХРАНИТЬ</button></div></div></article>';
@@ -85,6 +95,10 @@
  $('tab-schedule')?.addEventListener('click',()=>selectTab('schedule'));
  $('tab-homework')?.addEventListener('click',()=>selectTab('homework'));
  $('official-parity')?.addEventListener('change',renderOfficial);
+ $('week-start')?.addEventListener('change',()=>{if(weekStart.value)weekStart.value=iso(monday(weekStart.value));renderOfficial();});
+ $('week-prev')?.addEventListener('click',()=>{const d=monday(weekStart.value);d.setDate(d.getDate()-7);weekStart.value=iso(d);renderOfficial();});
+ $('week-next')?.addEventListener('click',()=>{const d=monday(weekStart.value);d.setDate(d.getDate()+7);weekStart.value=iso(d);renderOfficial();});
+ $('week-current')?.addEventListener('click',()=>{weekStart.value=iso(monday(iso(new Date())));renderOfficial();});
  $('official-week')?.addEventListener('click',event=>{
   const toggle=event.target.closest('[data-hw-toggle]');
   if(toggle){
@@ -128,5 +142,6 @@
   const box=event.target.closest('[data-hw-done]');if(!box)return;
   const i=Number(box.dataset.hwDone);homework[signatures[i]]={...(homework[signatures[i]]||{}),done:box.checked};saveHomework();renderHomework();
  });
+ window.addEventListener('tarelka-cloud-loaded',()=>{homework=readHomework();renderOfficial();renderHomework();});
  updateHomeworkCount();renderOfficial();renderHomework();
 })();
