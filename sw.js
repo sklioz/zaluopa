@@ -1,9 +1,10 @@
 
-const CACHE = 'tarelka-ui-v24';
+const CACHE = 'tarelka-ui-v25';
 
 const ASSETS = [
   './',
   './index.html',
+  './student.html',
   './profile.html',
   './guide.html',
   './recipes.html',
@@ -13,6 +14,7 @@ const ASSETS = [
   './lab.html',
   './style.css',
   './app.js',
+  './student.js',
   './lab-menu.js',
   './analytics.js',
   './recipes.js',
