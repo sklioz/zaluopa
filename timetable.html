@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#f7f6f0">
 <title>Расписание ПИЭ(б)-61 — Тарелка</title>
-<link rel="stylesheet" href="style.css?v=39">
+<link rel="stylesheet" href="style.css?v=40">
 <style>
 body{background:#f7f6f0;color:#303229}.timetable-page{width:min(1180px,92%);margin:38px auto 70px}
 .timetable-heading{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:22px}
@@ -31,18 +31,54 @@ body{background:#f7f6f0;color:#303229}.timetable-page{width:min(1180px,92%);marg
 .official-meta,.official-lesson-body small{color:#77796f;font-size:9px;line-height:1.45;overflow-wrap:anywhere}
 .official-note{margin:12px 0 0;color:#77796f;font-size:9px;line-height:1.5}
 @media(max-width:600px){.official-week{grid-template-columns:1fr}.official-timetable{padding:13px}.official-lesson{grid-template-columns:58px minmax(0,1fr)}}
+
+.timetable-tabs{display:flex;gap:8px;margin:-3px 0 22px;padding-bottom:12px;border-bottom:1px solid #e9e5dc}
+.timetable-tab{border:1px solid #e3dfd4;border-radius:999px;padding:10px 16px;background:#f4f3ec;color:#55594e;font:10px var(--mono);cursor:pointer}
+.timetable-tab.is-active{background:#718653;color:#fff;border-color:#718653}
+.timetable-tab span{display:inline-grid;place-items:center;min-width:18px;height:18px;margin-left:5px;border-radius:50%;background:#fff;color:#526344}
+.timetable-panel[hidden]{display:none!important}
+.group-tools{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:14px 0}
+.group-tools label{display:grid;gap:5px;color:#77796f;font:10px var(--mono)}
+.group-tools input{padding:9px 12px;border:1px solid #dedacd;border-radius:8px;background:#fffdf8;color:#303229}
+.group-tools a{font:10px var(--mono);color:#65764b}
+.official-lesson{grid-template-columns:66px minmax(0,1fr)}
+.official-homework{grid-column:1/-1;margin:7px 0 0;padding:10px;background:#f7f6f0;border-radius:8px}
+.official-homework textarea{display:block;width:100%;min-height:58px;resize:vertical;padding:9px;border:1px solid #e1ddd2;border-radius:7px;background:#fffdf8;color:#303229;font:12px var(--body)}
+.official-homework-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:7px}
+.official-homework-foot input[type=date]{padding:6px;border:1px solid #dedacd;border-radius:6px;background:#fffdf8;color:#303229;font:10px var(--body)}
+.official-homework-foot label{display:flex;align-items:center;gap:5px;color:#6b705f;font-size:10px}
+.official-homework-foot button{padding:7px 10px;border:1px solid #dce2d0;border-radius:7px;background:#eef0e7;color:#526344;font:9px var(--mono)}
+.homework-list{display:grid;gap:9px;margin-top:15px}
+.homework-entry{padding:13px;border:1px solid #e5e0d5;border-radius:10px;background:#fffdf8}
+.homework-entry.is-done{opacity:.7}
+.homework-entry strong{display:block;font-size:13px;color:#303229}
+.homework-entry p{margin:6px 0;color:#55594e;font-size:12px;white-space:pre-wrap}
+.homework-entry small{color:#77796f;font-size:10px}
+.homework-empty{padding:18px;border:1px dashed #d9d5ca;border-radius:10px;color:#77796f;font-size:12px;text-align:center}
+@media(max-width:600px){.group-tools{align-items:flex-start;flex-direction:column}.official-lesson{grid-template-columns:58px minmax(0,1fr)}}
 </style>
 </head>
 <body>
 <header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">Т</span><span>ТАРЕЛКА<span class="brand-dot">.</span></span></a><a class="profile-link" href="profile.html">← МОЙ ПРОФИЛЬ</a></header>
 <main class="timetable-page">
-<div class="timetable-heading"><div><span class="mini-label">УЧЁБА / ТОГУ</span><h1>Расписание ПИЭ(б)-61</h1><p>Осенний семестр 2026–2027</p></div><a href="https://togudv.ru/rasp/groups/68973/" target="_blank" rel="noopener">Официальная страница ТОГУ ↗</a></div>
+<div class="timetable-heading"><div><span class="mini-label">УЧЁБА / ТОГУ</span><h1>Учёба и расписание</h1><p>ТОГУ · осенний семестр 2026–2027</p></div><a href="https://togudv.ru/rasp/groups/68973/" target="_blank" rel="noopener">Официальная страница ТОГУ ↗</a></div>
 <section class="official-timetable" id="official-timetable">
-<div class="official-timetable-head"><div><span class="section-kicker">ТОГУ / ПИЭ(б)-61</span><h3>Расписание занятий</h3><p>Дни недели, пары, аудитории и преподаватели</p></div></div>
-<div class="official-timetable-controls"><label>Фильтр<select id="official-parity"><option value="all">Все занятия</option><option value="Ч">Числитель</option><option value="З">Знаменатель</option></select></label><span id="official-count" aria-live="polite"></span></div>
+<div class="timetable-tabs" role="tablist" aria-label="Разделы учёбы">
+<button class="timetable-tab is-active" id="tab-schedule" type="button" role="tab" aria-selected="true" aria-controls="panel-schedule">Расписание</button>
+<button class="timetable-tab" id="tab-homework" type="button" role="tab" aria-selected="false" aria-controls="panel-homework">Мои ДЗ <span id="homework-count">0</span></button>
+</div>
+<div id="panel-schedule" class="timetable-panel" role="tabpanel" aria-labelledby="tab-schedule">
+<div class="official-timetable-head"><div><span class="section-kicker">ТОГУ / ПИЭ(б)-61</span><h3>Расписание занятий</h3><p>Добавляй задания прямо к нужным парам</p></div></div>
+<div class="group-tools"><label>Текущая группа<input value="ПИЭ(б)-61" readonly></label><a href="https://togudv.ru/rasp/" target="_blank" rel="noopener">Найти другую группу на сайте ТОГУ ↗</a></div>
+<div class="official-timetable-controls"><label>Неделя<select id="official-parity"><option value="all">Все занятия</option><option value="Ч">Числитель</option><option value="З">Знаменатель</option></select></label><span id="official-count" aria-live="polite"></span></div>
 <div id="official-week" class="official-week" aria-live="polite"></div>
-<p class="official-note">Расписание перенесено из предоставленного PDF. В исходнике встречаются некорректные интервалы дат и записи по подгруппам, поэтому перед посещением пары сверяйся с официальной страницей ТОГУ.</p>
+<p class="official-note">Расписание перенесено из PDF. Сверяй изменения с <a href="https://togudv.ru/rasp/groups/68973/" target="_blank" rel="noopener">официальной страницей ТОГУ</a>.</p>
+</div>
+<div id="panel-homework" class="timetable-panel" role="tabpanel" aria-labelledby="tab-homework" hidden>
+<div class="official-timetable-head"><div><span class="section-kicker">МОИ ЗАДАНИЯ</span><h3>Домашняя работа</h3><p>Все сохранённые задания по парам в одном месте</p></div></div>
+<div id="homework-list" class="homework-list"></div>
+</div>
 </section>
 </main>
-<script src="student-schedule.js?v=39"></script>
+<script src="student-schedule.js?v=40"></script>
 </body></html>
