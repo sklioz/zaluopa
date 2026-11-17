@@ -44,44 +44,65 @@
  [5,3,'11:50','','пр','Иностранный язык','455ца','Коваленко И. В.','01.09.2026 – 05.01.2027','2 подгруппа']
  ];
  const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const HW_KEY='tarelka_togu_homework_v1';
+ const signatures=official.map((x,i)=>String(i)+'|'+x[0]+'|'+x[1]+'|'+x[2]+'|'+x[5]+'|'+x[6]);
+ const readHomework=()=>{try{return JSON.parse(localStorage.getItem(HW_KEY)||'{}')||{}}catch{return{}}};
+ let homework=readHomework();
+ const saveHomework=()=>{try{localStorage.setItem(HW_KEY,JSON.stringify(homework));return true}catch{return false}};
+ const lessonTitle=x=>x[5]+' · '+days[x[0]]+', '+x[1]+' пара, '+x[2];
+ function updateHomeworkCount(){
+  const count=Object.values(homework).filter(x=>x&&x.text&&x.text.trim()).length;
+  const badge=$('homework-count');if(badge)badge.textContent=count;
+ }
+ function renderHomework(){
+  const root=$('homework-list');if(!root)return;
+  const items=official.map((x,i)=>({x,i,h:homework[signatures[i]]||{}})).filter(v=>v.h.text&&v.h.text.trim());
+  root.innerHTML=items.length?items.map(({x,i,h})=>'<article class="homework-entry '+(h.done?'is-done':'')+'"><strong>'+esc(lessonTitle(x))+'</strong><p>'+esc(h.text)+'</p><small>'+esc(x[6]+' · '+x[7])+(h.due?' · Сдать до '+esc(h.due):'')+'</small><div class="official-homework-foot"><label><input type="checkbox" data-hw-done="'+i+'" '+(h.done?'checked':'')+'> Выполнено</label><button type="button" data-hw-edit="'+i+'">Открыть пару</button></div></article>').join(''):'<div class="homework-empty">Пока нет сохранённых заданий. Добавь ДЗ под нужной парой во вкладке «Расписание».</div>';
+  updateHomeworkCount();
+ }
  function renderOfficial(){
   const root=$('official-week');if(!root)return;
   const parity=$('official-parity')?.value||'all';
   const entries=official.filter(x=>parity==='all'||!x[3]||x[3]===parity);
-  $('official-count').textContent=entries.length+' записей';
+  $('official-count').textContent=entries.length+' занятий';
   root.innerHTML=days.map((day,index)=>{
-   const list=entries.filter(x=>x[0]===index).sort((a,b)=>a[1]-b[1]||a[2].localeCompare(b[2]));
+   const list=entries.map(x=>({x,i:official.indexOf(x)})).filter(v=>v.x[0]===index).sort((a,b)=>a.x[1]-b.x[1]||a.x[2].localeCompare(b.x[2]));
    if(!list.length)return '';
-   return '<section class="official-day"><h4>'+day+'</h4>'+list.map(x=>'<article class="official-lesson"><div class="official-lesson-time"><b>'+x[1]+' пара</b><time>'+x[2]+'</time><span>'+(x[3]||'Ч/З')+'</span></div><div class="official-lesson-body"><strong>'+esc(x[5])+'</strong><div class="official-meta">'+esc(x[4])+' · ауд. '+esc(x[6])+' · '+esc(x[7])+'</div>'+(x[9]?'<small>'+esc(x[9])+'</small>':'')+'<small>'+esc(x[8])+'</small></div></article>').join('')+'</section>';
+   return '<section class="official-day"><h4>'+day+'</h4>'+list.map(({x,i})=>{
+    const h=homework[signatures[i]]||{};
+    return '<article class="official-lesson"><div class="official-lesson-time"><b>'+x[1]+' пара</b><time>'+x[2]+'</time><span>'+(x[3]||'Ч/З')+'</span></div><div class="official-lesson-body"><strong>'+esc(x[5])+'</strong><div class="official-meta">'+esc(x[4])+' · ауд. '+esc(x[6])+' · '+esc(x[7])+'</div>'+(x[9]?'<small>'+esc(x[9])+'</small>':'')+'<small>'+esc(x[8])+'</small></div><div class="official-homework"><textarea maxlength="1200" data-hw-text="'+i+'" placeholder="Запиши домашнее задание...">'+esc(h.text||'')+'</textarea><div class="official-homework-foot"><label>Срок <input type="date" data-hw-due="'+i+'" value="'+esc(h.due||'')+'"></label><label><input type="checkbox" data-hw-done="'+i+'" '+(h.done?'checked':'')+'> Выполнено</label><button type="button" data-hw-save="'+i+'">СОХРАНИТЬ ДЗ</button></div></div></article>';
+   }).join('')+'</section>';
   }).join('')||'<p class="small-note">На выбранную неделю занятий нет.</p>';
  }
- $('official-parity')?.addEventListener('change',renderOfficial);
- const daysForm=[['1','Понедельник'],['2','Вторник'],['3','Среда'],['4','Четверг'],['5','Пятница'],['6','Суббота'],['0','Воскресенье']];
- const read=()=>{try{const v=JSON.parse(localStorage.getItem(KEY));return Array.isArray(v)?v:[]}catch{return[]}};
- let lessons=read();
- const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(lessons));return true}catch{return false}};
- function renderPersonal(){
-  const root=$('uni-week');if(!root)return;
-  const sorted=lessons.map((lesson,index)=>({...lesson,index})).sort((a,b)=>Number(a.day)-Number(b.day)||a.time.localeCompare(b.time));
-  root.innerHTML=sorted.length?sorted.map(item=>'<article class="uni-lesson '+(item.done?'homework-done':'')+'"><div class="uni-lesson-top"><span class="uni-day">'+daysForm.find(d=>d[0]===item.day)?.[1]+'</span><time>'+esc(item.time)+'</time><button type="button" data-lesson-remove="'+item.index+'" aria-label="Удалить пару">×</button></div><h4>'+esc(item.subject)+'</h4><div class="uni-meta">'+(item.room?'<span>Ауд. '+esc(item.room)+'</span>':'')+(item.teacher?'<span>'+esc(item.teacher)+'</span>':'')+'</div><div class="uni-homework"><label>ДОМАШНЕЕ ЗАДАНИЕ</label><textarea rows="2" maxlength="500" data-homework-text="'+item.index+'" placeholder="Пока ничего не задано">'+esc(item.homework)+'</textarea><div class="uni-homework-foot">'+(item.due?'<small>Сдать до: '+esc(item.due)+'</small>':'<small>Срок не указан</small>')+'<label class="uni-done"><input type="checkbox" data-homework-done="'+item.index+'" '+(item.done?'checked':'')+'> Выполнено</label></div><button type="button" class="uni-save-homework" data-homework-save="'+item.index+'">СОХРАНИТЬ ДЗ</button></div></article>').join(''):'<p class="small-note">Личных пар пока нет. Добавь заметку или свою пару через форму ниже.</p>';
+ function selectTab(which){
+  const schedule=which==='schedule';
+  $('panel-schedule').hidden=!schedule;$('panel-homework').hidden=schedule;
+  $('tab-schedule').classList.toggle('is-active',schedule);$('tab-homework').classList.toggle('is-active',!schedule);
+  $('tab-schedule').setAttribute('aria-selected',String(schedule));$('tab-homework').setAttribute('aria-selected',String(!schedule));
+  if(!schedule)renderHomework();
  }
- $('uni-lesson-form')?.addEventListener('submit',event=>{
-  event.preventDefault();
-  const lesson={subject:$('uni-subject').value.trim(),day:$('uni-day').value,time:$('uni-time').value,room:$('uni-room').value.trim(),teacher:$('uni-teacher').value.trim(),homework:$('uni-homework').value.trim(),due:$('uni-due').value,done:false};
-  if(!lesson.subject||!lesson.time)return;
-  lessons.push(lesson);
-  if(save()){event.target.reset();$('uni-time').value='09:00';renderPersonal();}
+ $('tab-schedule')?.addEventListener('click',()=>selectTab('schedule'));
+ $('tab-homework')?.addEventListener('click',()=>selectTab('homework'));
+ $('official-parity')?.addEventListener('change',renderOfficial);
+ $('official-week')?.addEventListener('click',event=>{
+  const button=event.target.closest('[data-hw-save]');
+  if(button){
+   const i=Number(button.dataset.hwSave);const area=$('official-week').querySelector('[data-hw-text="'+i+'"]');const due=$('official-week').querySelector('[data-hw-due="'+i+'"]');
+   homework[signatures[i]]={...(homework[signatures[i]]||{}),text:area?.value||'',due:due?.value||''};saveHomework();button.textContent='СОХРАНЕНО ✓';renderHomework();
+   return;
+  }
+  const edit=event.target.closest('[data-hw-edit]');
+  if(edit){selectTab('schedule');const i=Number(edit.dataset.hwEdit);const card=$('official-week').querySelector('[data-hw-text="'+i+'"]')?.closest('.official-lesson');card?.scrollIntoView({behavior:'smooth',block:'center'});}
  });
- $('uni-week')?.addEventListener('click',event=>{
-  const remove=event.target.closest('[data-lesson-remove]');
-  if(remove){lessons.splice(Number(remove.dataset.lessonRemove),1);save();renderPersonal();return;}
-  const button=event.target.closest('[data-homework-save]');
-  if(button){const index=Number(button.dataset.homeworkSave),field=$('uni-week').querySelector('[data-homework-text="'+index+'"]');if(lessons[index]&&field){lessons[index].homework=field.value.trim();save();button.textContent='СОХРАНЕНО ✓';}}
+ $('official-week')?.addEventListener('change',event=>{
+  const due=event.target.closest('[data-hw-due]');const done=event.target.closest('[data-hw-done]');
+  if(due){const i=Number(due.dataset.hwDue);homework[signatures[i]]={...(homework[signatures[i]]||{}),due:due.value};}
+  if(done){const i=Number(done.dataset.hwDone);homework[signatures[i]]={...(homework[signatures[i]]||{}),done:done.checked};}
+  saveHomework();renderHomework();
  });
- $('uni-week')?.addEventListener('change',event=>{
-  const checkbox=event.target.closest('[data-homework-done]');if(!checkbox)return;
-  const item=lessons[Number(checkbox.dataset.homeworkDone)];if(item){item.done=checkbox.checked;save();renderPersonal();}
+ $('homework-list')?.addEventListener('change',event=>{
+  const box=event.target.closest('[data-hw-done]');if(!box)return;
+  const i=Number(box.dataset.hwDone);homework[signatures[i]]={...(homework[signatures[i]]||{}),done:box.checked};saveHomework();renderHomework();
  });
- window.addEventListener('tarelka-cloud-loaded',()=>{lessons=read();renderPersonal();});
- renderOfficial();renderPersonal();
+ updateHomeworkCount();renderOfficial();renderHomework();
 })();
