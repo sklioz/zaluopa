@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#f7f6f0">
 <title>Расписание ПИЭ(б)-61 — Тарелка</title>
-<link rel="stylesheet" href="style.css?v=40">
+<link rel="stylesheet" href="style.css?v=41">
 <style>
 body{background:#f7f6f0;color:#303229}.timetable-page{width:min(1180px,92%);margin:38px auto 70px}
 .timetable-heading{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:22px}
@@ -56,10 +56,30 @@ body{background:#f7f6f0;color:#303229}.timetable-page{width:min(1180px,92%);marg
 .homework-entry small{color:#77796f;font-size:10px}
 .homework-empty{padding:18px;border:1px dashed #d9d5ca;border-radius:10px;color:#77796f;font-size:12px;text-align:center}
 @media(max-width:600px){.group-tools{align-items:flex-start;flex-direction:column}.official-lesson{grid-template-columns:58px minmax(0,1fr)}}
+
+/* Timetable UI: keep homework controls compact and styled */
+.timetable-page{max-width:1120px!important}
+.official-timetable{padding:22px!important}
+.official-lesson{display:grid!important;grid-template-columns:74px minmax(0,1fr)!important;gap:12px!important;align-items:start!important}
+.official-lesson-time{grid-column:1!important;grid-row:1!important}
+.official-lesson-body{grid-column:2!important;grid-row:1!important}
+.official-homework{grid-column:1/-1!important;display:grid!important;gap:8px!important;margin:8px 0 0!important;padding:12px!important;background:#f5f4ed!important;border:1px solid #e8e4da!important;border-radius:10px!important}
+.official-homework textarea{box-sizing:border-box!important;width:100%!important;min-height:66px!important;max-height:180px!important;padding:10px 12px!important;border:1px solid #dedacd!important;border-radius:8px!important;background:#fffdf8!important;color:#303229!important;font:13px/1.45 var(--body)!important;resize:vertical!important}
+.official-homework-foot{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:10px 14px!important;flex-wrap:wrap!important;margin:0!important}
+.official-homework-foot label{display:flex!important;align-items:center!important;gap:6px!important;color:#62675a!important;font:11px var(--body)!important}
+.official-homework-foot input[type=date]{width:auto!important;min-width:145px!important;padding:8px 10px!important;border:1px solid #dedacd!important;border-radius:8px!important;background:#fffdf8!important;color:#303229!important;font:12px var(--body)!important}
+.official-homework-foot input[type=checkbox]{width:16px!important;height:16px!important;accent-color:#718653!important}
+.official-homework-foot button{margin-left:auto!important;min-height:36px!important;padding:8px 13px!important;border:1px solid #dce2d0!important;border-radius:8px!important;background:#718653!important;color:#fff!important;font:10px var(--mono)!important;cursor:pointer!important}
+.homework-entry{display:grid!important;gap:7px!important;padding:15px!important}
+.homework-entry .official-homework-foot{padding-top:7px!important;border-top:1px solid #eeeae1!important}
+.timetable-tabs{position:sticky;top:72px;z-index:5;background:#fffdf8;padding:8px 0 12px!important}
+.timetable-nav{display:flex!important;gap:16px!important;align-items:center!important}
+.timetable-nav a{font:10px var(--mono)!important;color:#62675a!important}
+@media(max-width:700px){.official-lesson{grid-template-columns:58px minmax(0,1fr)!important}.official-homework-foot button{margin-left:0!important}.timetable-nav{display:none!important}}
 </style>
 </head>
 <body>
-<header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">Т</span><span>ТАРЕЛКА<span class="brand-dot">.</span></span></a><a class="profile-link" href="profile.html">← МОЙ ПРОФИЛЬ</a></header>
+<header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">Т</span><span>ТАРЕЛКА<span class="brand-dot">.</span></span></a><nav class="nav timetable-nav"><a href="index.html">Главная</a><a href="planner.html">Планировщик</a><a href="recipes.html">Рецепты</a><a href="profile.html">Мой прогресс</a></nav><a class="profile-link" href="profile.html">МОЙ ПРОФИЛЬ</a></header>
 <main class="timetable-page">
 <div class="timetable-heading"><div><span class="mini-label">УЧЁБА / ТОГУ</span><h1>Учёба и расписание</h1><p>ТОГУ · осенний семестр 2026–2027</p></div><a href="https://togudv.ru/rasp/groups/68973/" target="_blank" rel="noopener">Официальная страница ТОГУ ↗</a></div>
 <section class="official-timetable" id="official-timetable">
@@ -80,5 +100,5 @@ body{background:#f7f6f0;color:#303229}.timetable-page{width:min(1180px,92%);marg
 </div>
 </section>
 </main>
-<script src="student-schedule.js?v=40"></script>
+<script src="student-schedule.js?v=41"></script>
 </body></html>
