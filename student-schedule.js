@@ -28,5 +28,6 @@
   const checkbox=event.target.closest('[data-homework-done]');if(!checkbox)return;
   const item=lessons[Number(checkbox.dataset.homeworkDone)];if(item){item.done=checkbox.checked;save();render();}
  });
+ window.addEventListener('tarelka-cloud-loaded',()=>{lessons=read();render();});
  render();
 })();
