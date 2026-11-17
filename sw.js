@@ -1,5 +1,5 @@
 
-const CACHE = 'tarelka-ui-v19';
+const CACHE = 'tarelka-ui-v20';
 
 const ASSETS = [
   './',
@@ -15,6 +15,7 @@ const ASSETS = [
   './app.js',
   './analytics.js',
   './recipes.js',
+  './recipe-extras.js',
   './auth.js',
   './supabase-config.js',
   './manifest.webmanifest'
