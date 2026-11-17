@@ -634,3 +634,24 @@ button:disabled{color:#85877c!important}
 .topbar .nav a.active,.topbar .nav a:hover{border-color:#dce5cf;background:#f1f4e9;color:#718653!important}
 .topbar .profile-link{order:2;margin-left:auto}
 @media(max-width:780px){.topbar{height:auto!important;min-height:64px;padding:10px 5%!important;gap:10px!important}.topbar .profile-link{margin-left:0}.topbar .menu-toggle{margin-left:auto}.topbar .nav{left:12px!important;right:12px!important;width:auto!important;top:calc(100% + 5px)!important}}
+
+/* Официальное расписание ТОГУ */
+.official-timetable{margin:20px 0 28px;padding:18px;background:#f7f6f0;border:1px solid #e5e0d5;border-radius:14px}
+.official-timetable-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+.official-timetable-head h3{margin:6px 0 4px;color:#303229;font:600 22px var(--display)}
+.official-timetable-head p{margin:0;color:#77796f;font-size:11px}
+.official-timetable-head>a{color:#65764b;font:10px var(--mono);white-space:nowrap}
+.official-timetable-controls{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:16px 0;color:#77796f;font:10px var(--mono)}
+.official-timetable-controls label{display:grid;gap:6px}
+.official-timetable-controls select{min-width:180px;padding:9px 11px;border:1px solid #dedacd;border-radius:8px;background:#fffdf8;color:#303229}
+.official-week{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.official-day{min-width:0;padding:12px;background:#fffdf8;border:1px solid #e5e0d5;border-radius:10px}
+.official-day h4{margin:0 0 9px;color:#526344;font:600 14px var(--display)}
+.official-lesson{display:grid;grid-template-columns:66px minmax(0,1fr);gap:9px;padding:10px 0;border-top:1px solid #eeece5}
+.official-lesson-time{display:flex;flex-direction:column;gap:4px;color:#77796f;font:9px var(--mono)}
+.official-lesson-time b{color:#303229}.official-lesson-time span{color:#718653}
+.official-lesson-body{min-width:0;display:grid;gap:4px}
+.official-lesson-body strong{color:#303229;font-size:12px;overflow-wrap:anywhere}
+.official-meta,.official-lesson-body small{color:#77796f;font-size:9px;line-height:1.45;overflow-wrap:anywhere}
+.official-note{margin:12px 0 0;color:#77796f;font-size:9px;line-height:1.5}
+@media(max-width:600px){.official-week{grid-template-columns:1fr}.official-timetable{padding:13px}.official-lesson{grid-template-columns:58px minmax(0,1fr)}}
