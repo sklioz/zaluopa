@@ -1,11 +1,12 @@
 
-const CACHE = 'tarelka-ui-v41';
+const CACHE = 'tarelka-ui-v42';
 
 const ASSETS = [
   './',
   './index.html',
   './student.html',
   './profile.html',
+  './timetable.html',
   './guide.html',
   './recipes.html',
   './planner.html',
