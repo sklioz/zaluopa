@@ -756,3 +756,32 @@ button,input,select,textarea{max-width:100%}
   .hero-stats{gap:12px}
   .side-index{grid-template-columns:1fr}
 }
+
+
+/* Keep account/progress access visible on mobile. */
+@media(max-width:780px){
+  .topbar .profile-link{
+    display:inline-flex!important;
+    order:2!important;
+    align-items:center!important;
+    gap:5px!important;
+    margin-left:auto!important;
+    min-width:0;
+    color:#65764b!important;
+    font:600 8px/1 var(--mono)!important;
+    letter-spacing:.02em!important;
+    white-space:nowrap!important;
+  }
+  .topbar .profile-link .profile-icon{
+    display:grid!important;
+    flex:0 0 25px;
+    width:25px!important;
+    height:25px!important;
+    font-size:14px!important;
+  }
+  .topbar .menu-toggle{order:3!important;margin-left:0!important;flex:0 0 auto}
+}
+@media(max-width:360px){
+  .topbar .profile-link{font-size:0!important;gap:0!important}
+  .topbar .profile-link .profile-icon{width:29px!important;height:29px!important;flex-basis:29px}
+}
