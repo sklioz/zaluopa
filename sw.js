@@ -1,5 +1,5 @@
 
-const CACHE = 'tarelka-ui-v14';
+const CACHE = 'tarelka-ui-v15';
 
 const ASSETS = [
   './',
