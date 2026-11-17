@@ -18,6 +18,7 @@
     window.TARELKA_SUPABASE_URL,
     window.TARELKA_SUPABASE_PUBLISHABLE_KEY
   );
+  window.TARELKA_SUPABASE_CLIENT = client;
   const syncKeys = [
     'ebp_habits_v1', 'tarelka_menu_v3', 'ebp_shopping_v2',
     'ebp_quiz_v2', 'ebp_budget_v1', 'ebp_kitchen_v1',
@@ -79,7 +80,21 @@
     if (user) {
       status('Выполнен вход');
       byId('account-intro').textContent = 'Аккаунт подключён. Твой игровой прогресс можно синхронизировать между устройствами.';
-      byId('auth-user-label').textContent = 'Ты вошёл как ' + (user.email || 'пользователь') + '.';
+      byId('auth-user-label').textContent = 'Аккаунт подключён и готов к синхронизации.';
+      const metadata = user.user_metadata || {};
+      const displayName = metadata.display_name || metadata.username || 'Твой профиль';
+      const avatarEl = byId('account-avatar');
+      const nameEl = byId('account-display-name');
+      const emailEl = byId('account-email');
+      const profileForm = byId('account-profile-form');
+      if (avatarEl) avatarEl.textContent = metadata.avatar || '🌿';
+      if (nameEl) nameEl.textContent = displayName;
+      if (emailEl) emailEl.textContent = user.email || '';
+      if (profileForm) {
+        profileForm.elements.namedItem('displayName').value = metadata.display_name || metadata.username || '';
+        profileForm.elements.namedItem('avatar').value = metadata.avatar || '🌿';
+        profileForm.elements.namedItem('bio').value = metadata.bio || '';
+      }
       const dialog = byId('auth-dialog');
       if (dialog?.open) dialog.close();
     } else {
@@ -142,6 +157,28 @@
     });
     if (error) { message(error.message, true); return; }
     message('Вход выполнен. Загружаем твой прогресс…');
+  });
+  byId('account-profile-form')?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!currentUser) return;
+    const form = event.currentTarget;
+    const displayName = form.elements.namedItem('displayName').value.trim();
+    const avatar = form.elements.namedItem('avatar').value || '🌿';
+    const bio = form.elements.namedItem('bio').value.trim();
+    const saveStatus = byId('account-profile-status');
+    if (saveStatus) saveStatus.textContent = 'Сохраняем…';
+    const { data, error } = await client.auth.updateUser({
+      data: { ...currentUser.user_metadata, display_name: displayName, avatar, bio }
+    });
+    if (error) {
+      if (saveStatus) saveStatus.textContent = 'Не удалось сохранить';
+      message('Не удалось обновить профиль: ' + error.message, true);
+      return;
+    }
+    currentUser = data.user || currentUser;
+    showUser(currentUser);
+    if (saveStatus) saveStatus.textContent = 'Сохранено в аккаунте ✓';
+    message('Данные профиля обновлены.');
   });
   byId('signout-button')?.addEventListener('click', async () => {
     const { error } = await client.auth.signOut();
