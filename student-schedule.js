@@ -70,9 +70,10 @@
    if(!list.length)return '';
    return '<section class="official-day"><h4>'+day+'</h4>'+list.map(({x,i})=>{
     const h=homework[signatures[i]]||{};
-    return '<article class="official-lesson"><div class="official-lesson-time"><b>'+x[1]+' пара</b><time>'+x[2]+'</time><span>'+(x[3]||'Ч/З')+'</span></div><div class="official-lesson-body"><strong>'+esc(x[5])+'</strong><div class="official-meta">'+esc(x[4])+' · ауд. '+esc(x[6])+' · '+esc(x[7])+'</div>'+(x[9]?'<small>'+esc(x[9])+'</small>':'')+'<small>'+esc(x[8])+'</small></div><div class="official-homework"><textarea maxlength="1200" data-hw-text="'+i+'" placeholder="Запиши домашнее задание...">'+esc(h.text||'')+'</textarea><div class="official-homework-foot"><label>Срок <input type="date" data-hw-due="'+i+'" value="'+esc(h.due||'')+'"></label><label><input type="checkbox" data-hw-done="'+i+'" '+(h.done?'checked':'')+'> Выполнено</label><button type="button" data-hw-save="'+i+'">СОХРАНИТЬ ДЗ</button></div></div></article>';
+    const expanded=Boolean(h.text&&h.text.trim());
+    return '<article class="official-lesson" id="lesson-'+i+'"><div class="official-lesson-time"><b>'+x[1]+' пара</b><time>'+x[2]+'</time><span>'+(x[3]||'Ч/З')+'</span></div><div class="official-lesson-body"><strong>'+esc(x[5])+'</strong><div class="official-meta">'+esc(x[4])+' · ауд. '+esc(x[6])+' · '+esc(x[7])+'</div>'+(x[9]?'<small>'+esc(x[9])+'</small>':'')+'<small>'+esc(x[8])+'</small><button class="hw-toggle" type="button" data-hw-toggle="'+i+'" aria-expanded="'+expanded+'">'+(expanded?'Изменить ДЗ':'＋ Добавить ДЗ')+'</button></div><div class="official-homework" data-hw-panel="'+i+'" '+(expanded?'':'hidden')+'><textarea maxlength="1200" data-hw-text="'+i+'" placeholder="Запиши домашнее задание...">'+esc(h.text||'')+'</textarea><div class="official-homework-foot"><label>Срок <input type="date" data-hw-due="'+i+'" value="'+esc(h.due||'')+'"></label><label><input type="checkbox" data-hw-done="'+i+'" '+(h.done?'checked':'')+'> Выполнено</label><button type="button" data-hw-save="'+i+'">СОХРАНИТЬ</button></div></div></article>';
    }).join('')+'</section>';
-  }).join('')||'<p class="small-note">На выбранную неделю занятий нет.</p>';
+  }).join('')||'<p class="small-note">На выбранный тип недели занятий нет.</p>';
  }
  function selectTab(which){
   const schedule=which==='schedule';
@@ -85,14 +86,37 @@
  $('tab-homework')?.addEventListener('click',()=>selectTab('homework'));
  $('official-parity')?.addEventListener('change',renderOfficial);
  $('official-week')?.addEventListener('click',event=>{
-  const button=event.target.closest('[data-hw-save]');
-  if(button){
-   const i=Number(button.dataset.hwSave);const area=$('official-week').querySelector('[data-hw-text="'+i+'"]');const due=$('official-week').querySelector('[data-hw-due="'+i+'"]');
-   homework[signatures[i]]={...(homework[signatures[i]]||{}),text:area?.value||'',due:due?.value||''};saveHomework();button.textContent='СОХРАНЕНО ✓';renderHomework();
+  const toggle=event.target.closest('[data-hw-toggle]');
+  if(toggle){
+   const i=Number(toggle.dataset.hwToggle);
+   const panel=$('official-week').querySelector('[data-hw-panel="'+i+'"]');
+   const open=panel?.hidden;
+   if(panel)panel.hidden=!open;
+   toggle.setAttribute('aria-expanded',String(Boolean(open)));
+   toggle.textContent=open?'Скрыть ДЗ':'＋ Добавить ДЗ';
+   if(open)panel?.querySelector('textarea')?.focus();
    return;
   }
-  const edit=event.target.closest('[data-hw-edit]');
-  if(edit){selectTab('schedule');const i=Number(edit.dataset.hwEdit);const card=$('official-week').querySelector('[data-hw-text="'+i+'"]')?.closest('.official-lesson');card?.scrollIntoView({behavior:'smooth',block:'center'});}
+  const button=event.target.closest('[data-hw-save]');
+  if(button){
+   const i=Number(button.dataset.hwSave);
+   const area=$('official-week').querySelector('[data-hw-text="'+i+'"]');
+   const due=$('official-week').querySelector('[data-hw-due="'+i+'"]');
+   homework[signatures[i]]={...(homework[signatures[i]]||{}),text:area?.value||'',due:due?.value||''};
+   if(saveHomework()){button.textContent='СОХРАНЕНО ✓';renderHomework();updateHomeworkCount();}
+   else button.textContent='ОШИБКА СОХРАНЕНИЯ';
+   return;
+  }
+ });
+ $('homework-list')?.addEventListener('click',event=>{
+  const edit=event.target.closest('[data-hw-edit]');if(!edit)return;
+  const i=Number(edit.dataset.hwEdit);
+  selectTab('schedule');
+  const card=$('official-week').querySelector('#lesson-'+i);
+  const toggle=card?.querySelector('[data-hw-toggle]');
+  const panel=card?.querySelector('[data-hw-panel]');
+  if(panel){panel.hidden=false;toggle?.setAttribute('aria-expanded','true');if(toggle)toggle.textContent='Скрыть ДЗ';}
+  card?.scrollIntoView({behavior:'smooth',block:'center'});
  });
  $('official-week')?.addEventListener('change',event=>{
   const due=event.target.closest('[data-hw-due]');const done=event.target.closest('[data-hw-done]');
