@@ -596,3 +596,30 @@ button:disabled{color:#85877c!important}
 .planner-main .planner-actions .btn{padding:9px 11px;font-size:8px}
 @media(max-width:980px){.planner-main .shopping-list{grid-template-columns:repeat(2,minmax(0,1fr));max-height:240px}}
 @media(max-width:560px){.planner-main .shopping-list{grid-template-columns:repeat(2,minmax(0,1fr));max-height:220px}.planner-main .shopping-item{padding:7px;font-size:9px}.planner-main .planner-actions .btn{flex:1 1 45%;justify-content:center}}
+
+
+/* University timetable and homework */
+.uni-schedule{margin-top:25px;padding-top:22px;border-top:1px solid #e5e0d5}
+.uni-schedule-title p{margin:6px 0 16px;color:#77796f;font-size:11px;line-height:1.6}
+.uni-lesson-form{display:grid;gap:10px;padding:16px;background:#f5f4ed;border:1px solid #e5e0d5;border-radius:13px}
+.uni-lesson-form>label,.uni-lesson-form .uni-form-grid>label{display:flex;flex-direction:column;gap:6px;min-width:0;color:#66695f;font:9px var(--mono);letter-spacing:.05em;text-transform:uppercase}
+.uni-lesson-form input,.uni-lesson-form select,.uni-lesson-form textarea,.uni-homework textarea{width:100%;min-width:0;padding:10px 11px;border:1px solid #dedacd;border-radius:8px;background:#fffdf8;color:#303229;font:12px var(--body);text-transform:none;letter-spacing:0}
+.uni-lesson-form textarea,.uni-homework textarea{resize:vertical}
+.uni-form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;align-items:end}
+.uni-form-grid .btn{min-height:39px;justify-content:center;padding:10px;font-size:8px;white-space:normal}
+.uni-week{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:14px}
+.uni-lesson{min-width:0;padding:13px;background:#fffdf8;border:1px solid #e5e0d5;border-radius:11px}
+.uni-lesson-top{display:flex;align-items:center;gap:9px;color:#77796f;font:9px var(--mono)}
+.uni-lesson-top time{color:#65764b;font-weight:600}
+.uni-lesson-top button{margin-left:auto;border:0;background:transparent;color:#a56f68;font-size:19px}
+.uni-lesson h4{margin:7px 0 5px;color:#303229;font:600 16px var(--display);overflow-wrap:anywhere}
+.uni-meta{display:flex;gap:8px;flex-wrap:wrap;color:#77796f;font-size:10px}
+.uni-homework{margin-top:11px;padding-top:10px;border-top:1px solid #ece9e0}
+.uni-homework>label{display:block;margin-bottom:6px;color:#78845e;font:8px var(--mono);letter-spacing:.07em}
+.uni-homework-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:7px;color:#77796f;font-size:9px}
+.uni-done{display:flex;align-items:center;gap:5px;white-space:nowrap}
+.uni-done input{accent-color:#87966c}
+.uni-save-homework{margin-top:8px;padding:6px 9px;border:1px solid #dce2d0;border-radius:7px;background:#eef0e7;color:#526344;font:8px var(--mono)}
+.uni-lesson.homework-done{border-color:#dce5cf;background:#f4f7ef}
+.uni-lesson.homework-done .uni-homework textarea{text-decoration:line-through;color:#77796f}
+@media(max-width:560px){.uni-week{grid-template-columns:1fr}.uni-form-grid{grid-template-columns:1fr 1fr}.uni-form-grid .btn{grid-column:1/-1}}
