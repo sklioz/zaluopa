@@ -569,3 +569,17 @@ button:disabled{color:#85877c!important}
 /* Keep the ticker moving on every device. */
 .ticker-track{animation:ticker-move 24s linear infinite!important;}
 .ticker:hover .ticker-track{animation-play-state:running!important;}
+
+/* Fridge inventory */
+.fridge-form{display:grid;grid-template-columns:1.2fr 1fr 1fr auto;align-items:end;gap:10px}
+.fridge-form label{display:flex;flex-direction:column;gap:8px;color:#b7baad;font:10px var(--mono);letter-spacing:.06em}
+.fridge-form input{width:100%;min-width:0;padding:13px;background:#11130f;border:1px solid #414638;color:var(--paper);outline:none;font:12px var(--body)}
+.fridge-form input:focus{border-color:var(--acid)}
+.fridge-summary{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:20px 0 12px;color:#aeb0a5;font:10px var(--mono)}
+.fridge-summary b{color:var(--acid)}.fridge-alert{color:#e7bd77}
+.fridge-item{display:grid;grid-template-columns:minmax(0,1fr) auto 34px;align-items:center;gap:12px;padding:13px 0;border-top:1px solid #3a3e32}
+.fridge-item-main{display:flex;flex-direction:column;gap:5px;min-width:0}.fridge-item-main strong{font-size:13px;color:var(--paper);overflow-wrap:anywhere}.fridge-item-main small{font-size:10px;color:#96998c}
+.fridge-status{font:9px var(--mono);letter-spacing:.04em;padding:6px 8px;border-radius:999px;white-space:nowrap}
+.fridge-status.fresh{background:#293322;color:#cafa45}.fridge-status.soon{background:#3b3020;color:#f2c477}.fridge-status.expired{background:#402723;color:#ff9e8d}.fridge-status.neutral{background:#2a2d26;color:#aeb0a5}
+.fridge-remove{width:32px;height:32px;border:1px solid #454a39;border-radius:50%;background:transparent;color:#c5c9b8;font-size:19px;cursor:pointer}.fridge-remove:hover{border-color:#ff9e8d;color:#ff9e8d}
+@media(max-width:780px){.fridge-form{grid-template-columns:1fr 1fr}.fridge-form label:first-child,.fridge-form .btn{grid-column:1/-1}.fridge-item{grid-template-columns:minmax(0,1fr) auto 30px;gap:7px}.fridge-status{font-size:8px;padding:5px}}
