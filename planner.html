@@ -12,6 +12,17 @@
 </article>
 <article class="student-tool" id="student-study"><div class="student-tool-head"><span class="section-kicker">02 / УЧЁБА</span><span class="student-icon">▤</span></div><h2>ДЕДЛАЙНЫ <em>И ЗАДАЧИ.</em></h2><p class="lab-lead">Записывай пары, контрольные, проекты и мелкие дела, которые легко забыть.</p>
 <form id="student-task-form" class="student-task-form"><label>Задача или предмет<input id="student-task-title" maxlength="100" placeholder="Например, подготовить доклад" required></label><div class="student-form-row"><label>Дата<input id="student-task-date" type="date" required></label><label>Тип<select id="student-task-type"><option>Дедлайн</option><option>Экзамен</option><option>Зачёт</option><option>Пара</option><option>Другое</option></select></label></div><button class="btn btn-acid" type="submit">ДОБАВИТЬ В ПЛАН +</button></form><div id="student-task-list" class="student-list" aria-live="polite"></div>
+<div class="uni-schedule" id="uni-schedule">
+<div class="uni-schedule-title"><span class="section-kicker">РАСПИСАНИЕ ВУЗА</span><p>Добавляй пары по дням. Домашнее задание будет храниться прямо под нужным предметом.</p></div>
+<form id="uni-lesson-form" class="uni-lesson-form">
+<label>Предмет<input id="uni-subject" maxlength="80" placeholder="Например, математика" required></label>
+<div class="uni-form-grid"><label>День<select id="uni-day"><option value="1">Понедельник</option><option value="2">Вторник</option><option value="3">Среда</option><option value="4">Четверг</option><option value="5">Пятница</option><option value="6">Суббота</option><option value="0">Воскресенье</option></select></label><label>Начало<input id="uni-time" type="time" value="09:00" required></label><label>Аудитория<input id="uni-room" maxlength="30" placeholder="Например, 304"></label></div>
+<label>Преподаватель<input id="uni-teacher" maxlength="70" placeholder="Фамилия преподавателя"></label>
+<label>Домашнее задание<textarea id="uni-homework" rows="2" maxlength="500" placeholder="Что задали по этому предмету?"></textarea></label>
+<div class="uni-form-grid"><label>Сдать до<input id="uni-due" type="date"></label><button class="btn btn-acid" type="submit">ДОБАВИТЬ ПАРУ +</button></div>
+</form>
+<div class="uni-week" id="uni-week" aria-live="polite"></div>
+</div>
 </article>
 </section>
 <section class="student-dorm" id="student-dorm"><div class="section-kicker">03 / ОБЩЕЖИТИЕ И МАЛЕНЬКАЯ КУХНЯ</div><div class="section-heading"><h2>ПРОСТО ЕДА.<br><em>МИНИМУМ ТЕХНИКИ.</em></h2><p>Идеи, когда нет полноценной кухни. Перед приготовлением проверь, какая техника разрешена в общежитии, и соблюдай инструкции к ней.</p></div>
