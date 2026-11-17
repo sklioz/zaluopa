@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f7f6f0">
+<title>Расписание ПИЭ(б)-61 — Тарелка</title>
+<link rel="stylesheet" href="style.css?v=39">
+<style>
+body{background:#f7f6f0;color:#303229}.timetable-page{width:min(1180px,92%);margin:38px auto 70px}
+.timetable-heading{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:22px}
+.timetable-heading h1{margin:6px 0;font:600 clamp(28px,4vw,42px) var(--display)}
+.timetable-heading p{color:#77796f;font-size:13px}
+.timetable-heading a{color:#65764b;font:11px var(--mono)}
+.official-timetable{padding:22px;background:#fffdf8;border:1px solid #e5e0d5;border-radius:16px}
+.official-timetable-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+.official-timetable-head h3{margin:6px 0 4px;font:600 22px var(--display)}
+.official-timetable-head p{margin:0;color:#77796f;font-size:11px}
+.official-timetable-head>a{color:#65764b;font:10px var(--mono)}
+.official-timetable-controls{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:16px 0;color:#77796f;font:10px var(--mono)}
+.official-timetable-controls label{display:grid;gap:6px}
+.official-timetable-controls select{min-width:180px;padding:9px 11px;border:1px solid #dedacd;border-radius:8px;background:#fffdf8;color:#303229}
+.official-week{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.official-day{min-width:0;padding:12px;background:#fffdf8;border:1px solid #e5e0d5;border-radius:10px}
+.official-day h4{margin:0 0 9px;color:#526344;font:600 14px var(--display)}
+.official-lesson{display:grid;grid-template-columns:66px minmax(0,1fr);gap:9px;padding:10px 0;border-top:1px solid #eeece5}
+.official-lesson-time{display:flex;flex-direction:column;gap:4px;color:#77796f;font:9px var(--mono)}
+.official-lesson-time b{color:#303229}.official-lesson-time span{color:#718653}
+.official-lesson-body{min-width:0;display:grid;gap:4px}
+.official-lesson-body strong{font-size:12px;overflow-wrap:anywhere}
+.official-meta,.official-lesson-body small{color:#77796f;font-size:9px;line-height:1.45;overflow-wrap:anywhere}
+.official-note{margin:12px 0 0;color:#77796f;font-size:9px;line-height:1.5}
+@media(max-width:600px){.official-week{grid-template-columns:1fr}.official-timetable{padding:13px}.official-lesson{grid-template-columns:58px minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">Т</span><span>ТАРЕЛКА<span class="brand-dot">.</span></span></a><a class="profile-link" href="profile.html">← МОЙ ПРОФИЛЬ</a></header>
+<main class="timetable-page">
+<div class="timetable-heading"><div><span class="mini-label">УЧЁБА / ТОГУ</span><h1>Расписание ПИЭ(б)-61</h1><p>Осенний семестр 2026–2027</p></div><a href="https://togudv.ru/rasp/groups/68973/" target="_blank" rel="noopener">Официальная страница ТОГУ ↗</a></div>
+<section class="official-timetable" id="official-timetable">
+<div class="official-timetable-head"><div><span class="section-kicker">ТОГУ / ПИЭ(б)-61</span><h3>Расписание занятий</h3><p>Дни недели, пары, аудитории и преподаватели</p></div></div>
+<div class="official-timetable-controls"><label>Фильтр<select id="official-parity"><option value="all">Все занятия</option><option value="Ч">Числитель</option><option value="З">Знаменатель</option></select></label><span id="official-count" aria-live="polite"></span></div>
+<div id="official-week" class="official-week" aria-live="polite"></div>
+<p class="official-note">Расписание перенесено из предоставленного PDF. В исходнике встречаются некорректные интервалы дат и записи по подгруппам, поэтому перед посещением пары сверяйся с официальной страницей ТОГУ.</p>
+</section>
+</main>
+<script src="student-schedule.js?v=39"></script>
+</body></html>
