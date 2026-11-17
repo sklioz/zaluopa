@@ -13,6 +13,7 @@ const ASSETS = [
   './lab.html',
   './style.css',
   './app.js',
+  './lab-menu.js',
   './analytics.js',
   './recipes.js',
   './recipe-extras.js',
