@@ -22,7 +22,7 @@
   const syncKeys = [
     'ebp_habits_v1', 'tarelka_menu_v3', 'ebp_shopping_v2',
     'ebp_quiz_v2', 'ebp_budget_v1', 'ebp_kitchen_v1',
-    'food_you_basket_v1', 'tarelka_lab_achievements_v1',
+    'food_you_basket_v1', 'tarelka_favorites_v1', 'tarelka_lab_achievements_v1',
     'tarelka_lab_progress_v1'
   ];
   const readLocalSnapshot = () => {
