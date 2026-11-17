@@ -15,6 +15,7 @@ const ASSETS = [
   './style.css',
   './app.js',
   './student.js',
+  './student.css',
   './lab-menu.js',
   './analytics.js',
   './recipes.js',
