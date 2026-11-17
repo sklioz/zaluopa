@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="style.css"><title>Статистика — Тарелка</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js"></script>
+<style>
+.admin-wrap{max-width:1050px;margin:50px auto;padding:0 22px}.admin-panel{background:#20221c;border:1px solid #45483a;border-radius:22px;padding:24px;margin:22px 0;color:#f7f5ed}.admin-panel input{display:block;width:100%;max-width:420px;padding:12px;margin:7px 0 14px;border-radius:10px;border:1px solid #777;background:#f7f5ed;color:#20221c}.admin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}.metric{background:#2d3027;border-radius:16px;padding:18px}.metric small{display:block;color:#bfc4b2}.metric strong{font-size:30px;display:block;margin-top:8px;color:#cafa45}.admin-table{width:100%;border-collapse:collapse}.admin-table td,.admin-table th{text-align:left;padding:9px;border-bottom:1px solid #45483a}.admin-muted{color:#c1c5b9;font-size:13px;line-height:1.6}.admin-code{display:block;white-space:pre-wrap;overflow-wrap:anywhere;background:#11130f;padding:14px;border-radius:10px;color:#cafa45}.admin-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.admin-panel button{cursor:pointer}.admin-error{color:#ffb0a5}.admin-hidden{display:none!important}
+</style></head><body><div class="grain"></div><header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">Т</span><span>ТАРЕЛКА<span class="brand-dot">.</span></span></a><nav class="nav"><a href="index.html">На сайт</a></nav></header>
+<main class="admin-wrap"><div class="eyebrow">PRIVATE / ADMIN DASHBOARD</div><h1>СТАТИСТИКА<br><em>ТАРЕЛКИ.</em></h1><p class="admin-muted">Доступ только для аккаунтов, добавленных в список администраторов Supabase.</p>
+<section class="admin-panel" id="login-panel"><h2>Вход администратора</h2><form id="login-form"><label>Email<input name="email" type="email" required autocomplete="username"></label><label>Пароль<input name="password" type="password" required autocomplete="current-password"></label><button class="btn btn-acid" type="submit">ВОЙТИ ↗</button></form><p id="login-message" class="admin-muted" aria-live="polite"></p></section>
+<section class="admin-panel admin-hidden" id="setup-panel"><h2>Подключение доступа</h2><p class="admin-muted">Твой ID аккаунта Supabase. Скопируй SQL ниже и выполни его в Supabase → SQL Editor. Это добавит только твой аккаунт в список администраторов.</p><code id="user-id" class="admin-code"></code><code id="admin-sql" class="admin-code"></code><div class="admin-actions"><button class="btn btn-acid" id="copy-sql" type="button">СКОПИРОВАТЬ SQL</button><button class="plain-button" id="check-access" type="button">ПРОВЕРИТЬ ДОСТУП</button><button class="plain-button" id="logout" type="button">ВЫЙТИ</button></div><p id="setup-message" class="admin-muted"></p></section>
+<section class="admin-panel admin-hidden" id="dashboard"><div class="panel-head"><div><span class="mini-label">LIVE OVERVIEW</span><h2>Показатели сайта</h2></div><button class="plain-button" id="refresh" type="button">ОБНОВИТЬ ↻</button></div><div class="admin-grid" id="metrics"></div><h3>Посетители по дням · последние 30 дней</h3><div style="overflow:auto"><table class="admin-table"><thead><tr><th>Дата (UTC)</th><th>Посетители</th><th>Просмотры страниц</th></tr></thead><tbody id="daily"></tbody></table></div><h3>Популярные страницы · 30 дней</h3><div style="overflow:auto"><table class="admin-table"><thead><tr><th>Страница</th><th>Просмотры</th></tr></thead><tbody id="pages"></tbody></table></div><p class="admin-muted">Уникальные посетители считаются по случайному ID в браузере после согласия на статистику. Один человек на двух устройствах может учитываться как два посетителя. Зарегистрированные пользователи считаются по аккаунтам Supabase. «Активные аккаунты» — вошедшие пользователи, давшие согласие и посещавшие сайт за 30 дней.</p><p id="dashboard-message" class="admin-muted"></p></section>
+</main>
+<script>
+(() => {
+ const $=id=>document.getElementById(id);
+ if(!window.supabase?.createClient){$('login-message').textContent='Не загрузилась библиотека Supabase.';return;}
+ const client=window.supabase.createClient(window.TARELKA_SUPABASE_URL,window.TARELKA_SUPABASE_PUBLISHABLE_KEY);
+ let user=null;
+ const show=(id)=>['login-panel','setup-panel','dashboard'].forEach(x=>$(x).classList.toggle('admin-hidden',x!==id));
+ const msg=(id,text,error=false)=>{$(id).textContent=text;$(id).classList.toggle('admin-error',error);};
+ async function loadStats(){
+   msg('dashboard-message','Загружаю статистику…');
+   const {data,error}=await client.rpc('get_site_stats');
+   if(error){msg('dashboard-message','Не удалось получить статистику: '+error.message,true);return;}
+   const items=[['Все посетители',data.total_visitors],['Сегодня',data.today_visitors],['За 7 дней',data.week_visitors],['За месяц',data.month_visitors],['Зарегистрировано аккаунтов',data.registered_users],['Активные аккаунты · 30 дней',data.registered_active_30d],['Просмотры страниц',data.page_views]];
+   $('metrics').innerHTML=items.map(([name,value])=>'<div class="metric"><small>'+name+'</small><strong>'+Number(value||0).toLocaleString('ru-RU')+'</strong></div>').join('');
+   $('daily').innerHTML=(data.daily||[]).map(x=>'<tr><td>'+x.day+'</td><td>'+x.visitors+'</td><td>'+x.views+'</td></tr>').join('')||'<tr><td colspan="3">Пока нет данных</td></tr>';
+   $('pages').innerHTML=(data.pages||[]).map(x=>'<tr><td>'+x.page+'</td><td>'+x.views+'</td></tr>').join('')||'<tr><td colspan="2">Пока нет данных</td></tr>';
+   msg('dashboard-message','Обновлено: '+new Date().toLocaleString('ru-RU'));
+ }
+ async function check(){
+   const {data,error}=await client.rpc('get_site_stats');
+   if(!error){show('dashboard');renderStats(data);return true;}
+   show('setup-panel');msg('setup-message','Доступ ещё не включён. Выполни SQL ниже в Supabase SQL Editor, затем нажми «Проверить доступ».');
+   return false;
+ }
+ function renderStats(data){
+   const items=[['Все посетители',data.total_visitors],['Сегодня',data.today_visitors],['За 7 дней',data.week_visitors],['За месяц',data.month_visitors],['Зарегистрировано аккаунтов',data.registered_users],['Активные аккаунты · 30 дней',data.registered_active_30d],['Просмотры страниц',data.page_views]];
+   $('metrics').innerHTML=items.map(([name,value])=>'<div class="metric"><small>'+name+'</small><strong>'+Number(value||0).toLocaleString('ru-RU')+'</strong></div>').join('');
+   $('daily').innerHTML=(data.daily||[]).map(x=>'<tr><td>'+x.day+'</td><td>'+x.visitors+'</td><td>'+x.views+'</td></tr>').join('')||'<tr><td colspan="3">Пока нет данных</td></tr>';
+   $('pages').innerHTML=(data.pages||[]).map(x=>'<tr><td>'+x.page+'</td><td>'+x.views+'</td></tr>').join('')||'<tr><td colspan="2">Пока нет данных</td></tr>';
+   msg('dashboard-message','Обновлено: '+new Date().toLocaleString('ru-RU'));
+ }
+ $('login-form').addEventListener('submit',async e=>{e.preventDefault();const f=e.currentTarget;msg('login-message','Входим…');const {data,error}=await client.auth.signInWithPassword({email:f.email.value.trim(),password:f.password.value});if(error){msg('login-message',error.message,true);return;}user=data.user;await afterLogin();});
+ async function afterLogin(){const {data}=await client.auth.getUser();user=data.user;if(!user)return;const sql="insert into public.site_admins(user_id) values ('"+user.id+"') on conflict (user_id) do nothing;";$('user-id').textContent='Твой ID: '+user.id;$('admin-sql').textContent=sql;const {data:stats,error}=await client.rpc('get_site_stats');if(!error){show('dashboard');renderStats(stats);}else{show('setup-panel');msg('setup-message','Выполни SQL для своего ID в Supabase → SQL Editor, затем проверь доступ.');}}
+ $('copy-sql').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('admin-sql').textContent);msg('setup-message','SQL скопирован. Выполни его в Supabase SQL Editor.');}catch{msg('setup-message','Не удалось скопировать автоматически. Выдели SQL и скопируй вручную.');}});
+ $('check-access').addEventListener('click',afterLogin);
+ $('logout').addEventListener('click',async()=>{await client.auth.signOut();user=null;show('login-panel');});
+ $('refresh').addEventListener('click',loadStats);
+ client.auth.getSession().then(async({data})=>{if(data.session){user=data.session.user;await afterLogin();}});
+})();
+</script></body></html>
