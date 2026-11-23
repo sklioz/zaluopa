@@ -78,8 +78,13 @@
     currentUser = user || null;
     byId('auth-guest-actions').hidden = !!user;
     byId('auth-user').hidden = !user;
+    panel.classList.toggle('is-authenticated', !!user);
+    const intro = byId('account-intro');
+    if (intro) intro.hidden = !!user;
     if (user) {
       status('Выполнен вход');
+      const profileNav = byId('profile-nav-link');
+      if (profileNav) { profileNav.innerHTML = '<span class="profile-icon">✓</span> МОЙ ПРОФИЛЬ'; profileNav.setAttribute('aria-label', 'Открыть профиль аккаунта'); }
       byId('account-intro').textContent = 'Аккаунт подключён. Твой игровой прогресс можно синхронизировать между устройствами.';
       byId('auth-user-label').textContent = 'Аккаунт подключён и готов к синхронизации.';
       const metadata = user.user_metadata || {};
@@ -100,6 +105,9 @@
       if (dialog?.open) dialog.close();
     } else {
       status('Гость');
+      const profileNav = byId('profile-nav-link');
+      if (profileNav) { profileNav.innerHTML = '<span class="profile-icon">↗</span> МОЙ ПРОГРЕСС'; profileNav.removeAttribute('aria-label'); }
+      byId('account-intro').hidden = false;
       byId('account-intro').textContent = 'Войди или создай аккаунт, чтобы сохранять игровой прогресс и открывать его на других устройствах.';
     }
   }
@@ -147,6 +155,10 @@
       }, { onConflict: 'id' });
       if (profileError) message('Аккаунт создан, но профиль не сохранился: ' + profileError.message, true);
       else message(data.session ? 'Аккаунт создан. Ты вошёл.' : 'Аккаунт создан. Проверь почту и подтверди email, затем войди.');
+      if (data.session) {
+        showUser(data.user);
+        await loadFromCloud();
+      }
     }
   });
   byId('signin-form')?.addEventListener('submit', async (event) => {
