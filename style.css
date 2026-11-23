@@ -785,3 +785,10 @@ button,input,select,textarea{max-width:100%}
   .topbar .profile-link{font-size:0!important;gap:0!important}
   .topbar .profile-link .profile-icon{width:29px!important;height:29px!important;flex-basis:29px}
 }
+
+
+/* Hide account invitation elements after successful authentication. */
+#account-panel.is-authenticated #account-intro[hidden],
+#account-panel #auth-guest-actions[hidden],
+#account-panel #auth-user[hidden] { display:none !important; }
+#account-panel.is-authenticated .panel-head { margin-bottom:18px; }
